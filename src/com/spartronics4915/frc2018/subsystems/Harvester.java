@@ -80,8 +80,8 @@ public class Harvester extends Subsystem
 				/* double output = mAnalogInput.getAverageVoltage() * 1000.0 / 0.977; */
 				mSensor.update();
 				double output = mSensor.getAverageDistance(); //* 1000.0 / 0.977;
-				double adjust = output - 28;
-				broadcastNumber("CubeRange", adjust);
+				/* double adjust = output - 28; */
+				dashboardPutNumber("CubeRange", adjust);
             }
         }
 
