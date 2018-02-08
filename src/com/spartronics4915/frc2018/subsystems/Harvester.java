@@ -2,6 +2,7 @@ package com.spartronics4915.frc2018.subsystems;
 
 import com.spartronics4915.frc2018.loops.Loop;
 import com.spartronics4915.frc2018.loops.Looper;
+import com.spartronics4915.lib.util.drivers.UltrasonicSensor;
 
 /**
  * The harvester is a set of two collapsible rollers that pull in and hold
@@ -33,6 +34,8 @@ public class Harvester extends Subsystem
 
     private SystemState mSystemState = SystemState.FIXMEING;
     private WantedState mWantedState = WantedState.FIXME;
+	private UltrasonicSensor mSensor = new UltrasonicSensor(3);
+	protected double mScalingFactor = 512.0 / 5.0;
     
     // Actuators and sensors should be initialized as private members with a value of null here
     
@@ -74,6 +77,11 @@ public class Harvester extends Subsystem
                     logInfo("Harvester state from " + mSystemState + "to" + newState);
                     mSystemState = newState;
                 }
+				/* double output = mAnalogInput.getAverageVoltage() * 1000.0 / 0.977; */
+				mSensor.update();
+				double output = mSensor.getAverageDistance(); //* 1000.0 / 0.977;
+				double adjust = output - 28;
+				broadcastNumber("CubeRange", adjust);
             }
         }
 
