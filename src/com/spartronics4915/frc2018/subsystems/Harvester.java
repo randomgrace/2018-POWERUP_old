@@ -2,7 +2,7 @@ package com.spartronics4915.frc2018.subsystems;
 
 import com.spartronics4915.frc2018.loops.Loop;
 import com.spartronics4915.frc2018.loops.Looper;
-import com.spartronics4915.lib.util.drivers.IRSensor;
+import com.spartronics4915.lib.util.drivers.SpartIRSensor;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
@@ -36,9 +36,7 @@ public class Harvester extends Subsystem
 
     private SystemState mSystemState = SystemState.FIXMEING;
     private WantedState mWantedState = WantedState.FIXME;
-	protected double mMinTrigger = .25;
-	protected double mMaxTrigger = 3.1;
-	private IRSensor mSensor = new IRSensor(3, mMinTrigger, mMaxTrigger);
+	private SpartIRSensor mSensor = new SpartIRSensor(3);
 
     /* private AnalogInput mAnalogInput = new AnalogInput(kIRSensorPort); */
     
@@ -86,7 +84,7 @@ public class Harvester extends Subsystem
                 double voltage = mSensor.getVoltage();
                 boolean acquired = false;
 				dashboardPutNumber("Voltage", voltage);
-				if (voltage > mMinTrigger && voltage < mMaxTrigger) {
+				if (mSensor.isTargetAcquired(voltage)) {
 				    acquired = true;
 				} else {
 				    acquired = false;
