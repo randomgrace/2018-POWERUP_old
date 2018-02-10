@@ -2,7 +2,8 @@ package com.spartronics4915.frc2018.subsystems;
 
 import com.spartronics4915.frc2018.loops.Loop;
 import com.spartronics4915.frc2018.loops.Looper;
-import com.spartronics4915.lib.util.drivers.UltrasonicSensor;
+import com.spartronics4915.lib.util.drivers.IRSensor;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The harvester is a set of two collapsible rollers that pull in and hold
@@ -12,6 +13,7 @@ import com.spartronics4915.lib.util.drivers.UltrasonicSensor;
 public class Harvester extends Subsystem
 {
     private static Harvester sInstance = null;
+	private static int kIRSensorPort = 3;
 
     public static Harvester getInstance()
     {
@@ -34,8 +36,11 @@ public class Harvester extends Subsystem
 
     private SystemState mSystemState = SystemState.FIXMEING;
     private WantedState mWantedState = WantedState.FIXME;
-	private UltrasonicSensor mSensor = new UltrasonicSensor(3);
-	protected double mScalingFactor = 512.0 / 5.0;
+	protected double mMinTrigger = .25;
+	protected double mMaxTrigger = 3.1;
+	private IRSensor mSensor = new IRSensor(3, mMinTrigger, mMaxTrigger);
+
+    /* private AnalogInput mAnalogInput = new AnalogInput(kIRSensorPort); */
     
     // Actuators and sensors should be initialized as private members with a value of null here
     
@@ -57,6 +62,7 @@ public class Harvester extends Subsystem
             synchronized(Harvester.this)
             {
                 mSystemState = SystemState.FIXMEING;
+                
             }
         }
 
@@ -77,11 +83,18 @@ public class Harvester extends Subsystem
                     logInfo("Harvester state from " + mSystemState + "to" + newState);
                     mSystemState = newState;
                 }
-				/* double output = mAnalogInput.getAverageVoltage() * 1000.0 / 0.977; */
-				mSensor.update();
-				double output = mSensor.getAverageDistance(); //* 1000.0 / 0.977;
-				/* double adjust = output - 28; */
-				dashboardPutNumber("CubeRange", adjust);
+                double voltage = mSensor.getVoltage();
+                boolean acquired = false;
+				dashboardPutNumber("Voltage", voltage);
+				if (voltage > mMinTrigger && voltage < mMaxTrigger) {
+				    acquired = true;
+				} else {
+				    acquired = false;
+				}
+                dashboardPutBoolean("Acquired", acquired);
+
+
+				
             }
         }
 
