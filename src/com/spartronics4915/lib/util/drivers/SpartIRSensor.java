@@ -14,6 +14,26 @@ import com.spartronics4915.lib.util.drivers.IRSensor;
  *       
  *       maxVoltage = maximum voltage for range
  *       
+ * Usage example:
+ *
+ * import com.spartronics4915.lib.util.drivers.SpartIRSensor;
+ *
+ * public class Harvester extends Subsystem
+ * {
+ *
+ * private SpartIRSensor mSensor = new SpartIRSensor(3, 0.25, 3.1);
+ *
+ * (in onLoop):
+ *
+ *       double voltage = mSensor.getVoltage();
+ *       boolean acquired = false;
+ *       dashboardPutNumber("Voltage", voltage);
+ *       if (mSensor.isTargetAcquired(voltage)) {
+ *            acquired = true;
+ *       } else {
+ *            acquired = false;
+ *       }
+ *       dashboardPutBoolean("Acquired", acquired);
  */
 public class SpartIRSensor
 {
