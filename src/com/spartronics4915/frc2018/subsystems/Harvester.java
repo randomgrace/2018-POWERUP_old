@@ -36,7 +36,7 @@ public class Harvester extends Subsystem
 
     private SystemState mSystemState = SystemState.FIXMEING;
     private WantedState mWantedState = WantedState.FIXME;
-	private SpartIRSensor mSensor = new SpartIRSensor(3);
+	private SpartIRSensor mSensor = new SpartIRSensor(3, 0.25, 3.1);
 
     /* private AnalogInput mAnalogInput = new AnalogInput(kIRSensorPort); */
     

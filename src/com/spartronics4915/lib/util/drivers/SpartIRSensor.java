@@ -1,38 +1,39 @@
 package com.spartronics4915.lib.util.drivers;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
 import com.spartronics4915.lib.util.drivers.IRSensor;
 
 /**
  * Driver for a set of Sharp analog IR sensors that provide distance
  * measurement over a set range.
+ * 
+ * Usage: SpartIRSensor(int port, double minVoltage, double maxVoltage)
+ * 
+ * where port = analog input port number on RoboRio
+ * 
+ *       minVoltage = minimum voltage for range
+ *       
+ *       maxVoltage = maximum voltage for range
+ *       
  */
 public class SpartIRSensor
 {
 
-    protected final double mMinVoltage = 0.25;
-    protected final double mMaxVoltage = 3.1;
-    private static int kIRSensorPort = 3;
-    private IRSensor mSensor = new IRSensor(kIRSensorPort, mMinVoltage, mMaxVoltage);
-    Map<String, double[]> models = new TreeMap<String, double[]>();
-
-    models.put("A41", new double[] {0.25, 3.1, 4.0, 30.0});
-    models.put("A51", new double[] {0.25, 5.5, 2.0, 15.0});
-    models.put("A21", new double[] {0.25, 5.5, 2.0, 15.0});
-    models.put("A60", new double[] {0.25, 5.5, 2.0, 15.0});
-    models.put("A02", new double[] {0.25, 5.5, 2.0, 15.0});
-    models.put("A71", new double[] {0.25, 5.5, 2.0, 15.0});
+    double mMinVoltage = 0.25;
+    double mMaxVoltage = 3.1;
+    private IRSensor mSensor;
     
 
-    public SpartIRSensor(int port)
+    public SpartIRSensor(int port, double minVoltage, double maxVoltage)
     {
+        mSensor = new IRSensor(port, minVoltage, maxVoltage);
+        mMinVoltage = minVoltage;
+        mMaxVoltage = maxVoltage;
+
     }
     
     public IRSensor getSensor()
     {
-        return this.mSensor;
+        return mSensor;
     }
 
     public double getVoltage()
